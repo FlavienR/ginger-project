@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
 public class Player : MonoBehaviour
@@ -6,8 +7,9 @@ public class Player : MonoBehaviour
     // Static singleton instance
     private static Player instance;
 
-    private Vector3 newPos;
-    private GameObject crossHair;
+    Vector3 newPos;
+    GameObject crossHair;
+	NavMeshAgent agent;
 
     // Static singleton property
     public static Player Instance
@@ -20,13 +22,23 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        name = "Player";
-        newPos = Vector3.zero;
+		name = "Player";
+		agent = gameObject.AddComponent<NavMeshAgent> ();
+		agent.speed = 4f;
         GetComponent<Renderer>().material.color = Color.blue;
-        crossHair = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        crossHair.GetComponent<Renderer>().material.color = Color.green;
-        crossHair.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+		InitCrossHair ();
     }
+
+	void InitCrossHair(){
+		crossHair = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		crossHair.GetComponent<Renderer>().material.color = Color.green;
+		crossHair.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+	}
+
+	public void MoveTo(Vector3 position){
+		if(agent)
+			agent.SetDestination (position);
+	}
 
     // Update is called once per frame
     void Update()
@@ -42,7 +54,7 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButton(0))
                 newPos = crossHair.transform.position;
         }
-        transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime);
+		MoveTo (newPos);
     }
 }
 

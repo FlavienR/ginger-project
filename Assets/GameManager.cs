@@ -4,6 +4,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour{
     // Static singleton instance
     private static GameManager instance;
+	GameObject housePlayer;
 
     // Static singleton property
     public static GameManager Instance
@@ -15,8 +16,22 @@ public class GameManager : MonoBehaviour{
 
     void Start()
     {
-        Player.Instance.gameObject.transform.position = Vector3.zero;
+		Init ();
+		Vector3 pos = new Vector3 (Random.Range (0, 10), 0, Random.Range (0, 10));
+		SetSpawn (pos);
+		EnemyManager.Instance.StartSpawning ();
     }
+
+	void Init(){
+		Player.Instance.transform.position = Vector3.zero;
+		housePlayer = Instantiate(Resources.Load ("Prefab/HousePrefab") as GameObject);
+	}
+
+	void SetSpawn(Vector3 pointToSpawn){
+		pointToSpawn.y = 2.60f;
+		housePlayer.transform.position = pointToSpawn;
+		Player.Instance.MoveTo (pointToSpawn/2f);
+	}
 
     void Update()
     {
