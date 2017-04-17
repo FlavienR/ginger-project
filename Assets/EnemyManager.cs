@@ -25,9 +25,10 @@ public class EnemyManager : MonoBehaviour {
 
 	IEnumerator SpawnEnemy(){
 		yield return new WaitForSeconds (5);
-		listEnemies.Add (Instantiate (enemyPrefab, listSpawns[Random.Range(0, listSpawns.Length-1)].transform));
+		listEnemies.Add (Instantiate (enemyPrefab, listSpawns[Random.Range(0, listSpawns.Length)].transform));
 		Debug.Log ("EnemySpawned");
-	}
+        StartCoroutine("SpawnEnemy");
+    }
 
 	// Update is called once per frame
 	void Update () {
