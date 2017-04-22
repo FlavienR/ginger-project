@@ -8,6 +8,10 @@ public class EnemyManager : MonoBehaviour {
 	public List<GameObject> listEnemies = new List<GameObject> ();
 	public GameObject[] listSpawns;
 
+    private TimeManager tManager;
+    private float Timer;
+    private float secToWait = 5f;
+
 	// Static singleton property
 	public static EnemyManager Instance
 	{
@@ -20,18 +24,23 @@ public class EnemyManager : MonoBehaviour {
 	public void StartSpawning () {
 		enemyPrefab = Resources.Load ("Prefab/Enemy") as GameObject;
 		listSpawns = GameObject.FindGameObjectsWithTag ("EnemySpawn");
-		StartCoroutine ("SpawnEnemy");
-	}
+        tManager = GameObject.Find("Directional Light").GetComponent<TimeManager>();
+        Timer = Time.time + secToWait;
 
-	IEnumerator SpawnEnemy(){
-		yield return new WaitForSeconds (5);
+    }
+
+	void SpawnEnemy()
+    {
 		listEnemies.Add (Instantiate (enemyPrefab, listSpawns[Random.Range(0, listSpawns.Length)].transform));
 		Debug.Log ("EnemySpawned");
-        StartCoroutine("SpawnEnemy");
     }
 
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if(Timer < Time.time && !tManager.DayTime())
+        {
+            SpawnEnemy();
+            Timer = Time.time + secToWait;
+        }
+    }
 }

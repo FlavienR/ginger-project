@@ -34,10 +34,17 @@ public class TimeManager : MonoBehaviour
         }
     }
 
+    public Boolean DayTime()
+    {
+        return currentTime < (int)Cycle.Night && currentTime >= (int)Cycle.Day;
+    }
+
     // Update is called once per frame
     void Update()
     {
         currentTime += Time.deltaTime;
-        transform.Rotate(new Vector3(currentTime * 0.001f, 0f));
+        transform.rotation = Quaternion.Euler(currentTime, 0f, 0f);
+        if (currentTime >= 266f)
+            currentTime = 0;
     }
 }
