@@ -1,18 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour {
-	NavMeshAgent agent;
-	// Use this for initialization
-	void Start () {
-		GetComponent<Renderer> ().material.color = Color.red;
-		agent = GetComponent<NavMeshAgent> ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		agent.SetDestination (Player.Instance.transform.position);
-	}
+public class Enemy : MonoBehaviour
+{
+    private NavMeshAgent _agent;
+
+    // Use this for initialization
+    private void Start()
+    {
+        GetComponent<Renderer>().material.color = Color.red;
+        _agent = GetComponent<NavMeshAgent>();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        _agent.SetDestination(Player.Instance.transform.position);
+    }
 }

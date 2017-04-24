@@ -1,33 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SwitchScript : MonoBehaviour
 {
-
     private GameObject[] panelsMode;
-
-    public const string GameMode = "Game";
-    public const string BuildMode = "Build";
-
-    // Use this for initialization
-    void Start()
-    {
-        panelsMode = GameObject.FindGameObjectsWithTag("Panel");
-
-        DisableAllModeExcept("Game");
-
-    }
+    private const string GAME_MODE = "Game";
+    private const string BUILD_MODE = "Build";
 
     public void EnableBuildMode()
     {
-        DisableAllModeExcept(BuildMode);
+        DisableAllModeExcept(BUILD_MODE);
         EnablePanel("Build Panel");
     }
 
     public void EnableGameMode()
     {
-        DisableAllModeExcept(GameMode);
+        DisableAllModeExcept(GAME_MODE);
         EnablePanel("Game Panel");
     }
 
@@ -48,5 +35,12 @@ public class SwitchScript : MonoBehaviour
                 continue;
             panelsMode[i].SetActive(false);
         }
+    }
+
+    // Use this for initialization
+    private void Start()
+    {
+        panelsMode = GameObject.FindGameObjectsWithTag("Panel");
+        DisableAllModeExcept("Game");
     }
 }

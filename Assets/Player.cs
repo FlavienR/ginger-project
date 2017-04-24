@@ -5,40 +5,39 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     // Static singleton instance
-    private static Player instance;
-
-    Vector3 newPos;
-    GameObject crossHair;
-	NavMeshAgent agent;
+    private static Player _instance;
+    private Vector3 _newPos;
+    private GameObject _crossHair;
+    private NavMeshAgent _agent;
 
     // Static singleton property
     public static Player Instance
     {
-        // Here we use the ?? operator, to return 'instance' if 'instance' does not equal null
-        // otherwise we assign instance to a new component and return that
-        get { return instance ?? (instance = GameObject.CreatePrimitive(PrimitiveType.Capsule).AddComponent<Player>()); }
+        get { return _instance ?? (_instance = GameObject.CreatePrimitive(PrimitiveType.Capsule).AddComponent<Player>()); }
     }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-		name = "Player";
-		agent = gameObject.AddComponent<NavMeshAgent> ();
-		agent.speed = 4f;
+        name = "Player";
+        _agent = gameObject.AddComponent<NavMeshAgent>();
+        _agent.speed = 4f;
         GetComponent<Renderer>().material.color = Color.blue;
-		InitCrossHair ();
+        InitCrossHair();
     }
 
-	void InitCrossHair(){
-		crossHair = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		crossHair.GetComponent<Renderer>().material.color = Color.green;
-		crossHair.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-	}
+    private void InitCrossHair()
+    {
+        _crossHair = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        _crossHair.GetComponent<Renderer>().material.color = Color.green;
+        _crossHair.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
 
-	public void MoveTo(Vector3 position){
-		if(agent)
-			agent.SetDestination (position);
-	}
+    public void MoveTo(Vector3 position)
+    {
+        if (_agent)
+            _agent.SetDestination(position);
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,12 +48,12 @@ public class Player : MonoBehaviour
         {
             if (hit.collider.gameObject.name == "TerrainPlane")
             {
-                crossHair.transform.position = hit.point;
+                _crossHair.transform.position = hit.point;
             }
             if (Input.GetMouseButton(0))
-                newPos = crossHair.transform.position;
+                _newPos = _crossHair.transform.position;
         }
-		MoveTo (newPos);
+        MoveTo(_newPos);
     }
 }
 
