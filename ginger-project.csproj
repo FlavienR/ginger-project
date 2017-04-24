@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>5.6.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -90,6 +92,7 @@
     <Compile Include="Assets\ClickScript.cs" />
     <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\EnemyManager.cs" />
+    <Compile Include="Assets\Enum\Cycle.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\SwitchScript.cs" />

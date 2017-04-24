@@ -1,50 +1,43 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Enum;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    private float startTime;
+    private float _startTime;
+    private float _currentTime;
 
-    public float currentTime;
-
-    enum Cycle
+    public bool DayTime()
     {
-        Day = 7,
-        Night = 177
+        return _currentTime < (int)Cycle.Night && _currentTime >= (int)Cycle.Day;
     }
 
     // Use this for initialization
-    void Start () {
+    private void Start()
+    {
         StartTime = (int)Cycle.Day;
-
     }
-	
-    float StartTime
+
+    private float StartTime
     {
         get
         {
-            return startTime;
+            return _startTime;
         }
         set
         {
-            startTime = value <= 0 ? (int)Cycle.Day : value;
-            currentTime = startTime;
+            _startTime = value <= 0 ? (int)Cycle.Day : value;
+            _currentTime = _startTime;
         }
     }
 
-    public Boolean DayTime()
-    {
-        return currentTime < (int)Cycle.Night && currentTime >= (int)Cycle.Day;
-    }
-
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        currentTime += Time.deltaTime;
-        transform.rotation = Quaternion.Euler(currentTime, 0f, 0f);
-        if (currentTime >= 266f)
-            currentTime = 0;
+        _currentTime += Time.deltaTime;
+        transform.rotation = Quaternion.Euler(_currentTime, 0f, 0f);
+        if (_currentTime >= 266f)
+        {
+            _currentTime = 0;
+        }
     }
 }
