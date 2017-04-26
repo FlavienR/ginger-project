@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour
     // Static singleton instance
     private static GameManager _instance;
 	private GameObject _housePlayer;
+    private GameObject _prefabTurret;
+    private GameObject _prefabWoodPlanks;
 
     // Static singleton property
     public static GameManager Instance
@@ -23,7 +25,9 @@ public class GameManager : MonoBehaviour
     private void Init(){
 		Player.Instance.transform.position = Vector3.zero;
 		_housePlayer = Instantiate(Resources.Load ("Prefab/HousePrefab") as GameObject);
-	}
+        _prefabTurret = Resources.Load("Prefab/Turret") as GameObject;
+        _prefabWoodPlanks = Resources.Load("Prefab/WoodPlanks") as GameObject;
+    }
 
     private void SetSpawn(Vector3 pointToSpawn){
 		pointToSpawn.y = 2.60f;
@@ -31,7 +35,13 @@ public class GameManager : MonoBehaviour
 		Player.Instance.MoveTo (pointToSpawn/2f);
 	}
 
-    private void Update()
+    public void ClickTurret()
     {
+        Player.Instance.ChangeCrossHairBuild(_prefabTurret);
+    }
+
+    public void ClickWoodPlanks()
+    {
+        Player.Instance.ChangeCrossHairBuild(_prefabWoodPlanks);
     }
 }

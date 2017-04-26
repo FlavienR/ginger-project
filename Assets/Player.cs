@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
     // Static singleton instance
     private static Player _instance;
+
     private Vector3 _newPos;
     private GameObject _crossHair;
     private NavMeshAgent _agent;
+    private bool _isBuilding;
 
     // Static singleton property
     public static Player Instance
@@ -39,8 +42,15 @@ public class Player : MonoBehaviour
             _agent.SetDestination(position);
     }
 
+    public void ChangeCrossHairBuild(GameObject prefab)
+    {
+        GameObject.Destroy(_crossHair.gameObject);
+        _crossHair = Instantiate(prefab);
+        _isBuilding = true;
+    }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -50,8 +60,18 @@ public class Player : MonoBehaviour
             {
                 _crossHair.transform.position = hit.point;
             }
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
                 _newPos = _crossHair.transform.position;
+            }else if (Input.GetMouseButtonUp(0))
+            {
+                if (_isBuilding && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    // Le fais de réassigner le crosshair, fais perdre le focus sur l'objet et ne suis plus la souris
+                    InitCrossHair();
+                    _isBuilding = false;
+                }
+            }
         }
         MoveTo(_newPos);
     }
