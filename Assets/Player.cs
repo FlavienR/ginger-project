@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private GameObject _crossHair;
     private NavMeshAgent _agent;
     private bool _isBuilding;
+    private GameObject _camObject;
 
     // Static singleton property
     public static Player Instance
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
         name = "Player";
         _agent = gameObject.AddComponent<NavMeshAgent>();
         _agent.speed = 4f;
+        _camObject = GameObject.Find("CamObject");
         GetComponent<Renderer>().material.color = Color.blue;
         InitCrossHair();
     }
@@ -62,8 +64,13 @@ public class Player : MonoBehaviour
             }
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
+                float clickTime = Time.time;
                 _newPos = _crossHair.transform.position;
-            }else if (Input.GetMouseButtonUp(0))
+                if (clickTime + 2f > Time.time)
+                    _camObject.transform.position += new Vector3(-Input.GetAxis("Mouse X"), 0f, -Input.GetAxis("Mouse Y"));
+
+            }
+            else if (Input.GetMouseButtonUp(0))
             {
                 if (_isBuilding && !EventSystem.current.IsPointerOverGameObject())
                 {
