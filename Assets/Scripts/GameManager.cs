@@ -8,10 +8,11 @@ public class GameManager : MonoBehaviour
     private GameObject _prefabTurret;
     private GameObject _prefabWoodPlanks;
 
+
     // Static singleton property
     public static GameManager Instance
     {
-        get { return _instance ?? (_instance = new GameObject("GameManagerObject").AddComponent<GameManager>()); }
+        get { return _instance; }
     }
 
     private void Start()
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
 		Vector3 pos = new Vector3 (Random.Range (0, 10), 0, Random.Range (0, 10));
 		SetSpawn (pos);
 		EnemyManager.Instance.StartSpawning ();
+        _instance = this;
     }
 
     private void Init(){
@@ -44,4 +46,15 @@ public class GameManager : MonoBehaviour
     {
         Player.Instance.ChangeCrossHairBuild(_prefabWoodPlanks);
     }
+
+    public void ValidateBuilding()
+    {
+        Player.Instance.BuildCurrentObject();
+    }
+
+    public void CancelBuilding()
+    {
+        Player.Instance.CancelBuilding();
+    }
+    
 }

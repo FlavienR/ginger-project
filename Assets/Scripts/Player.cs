@@ -2,17 +2,19 @@
 using UnityEngine.AI;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 public class Player : MonoBehaviour
 {
     // Static singleton instance
     private static Player _instance;
 
+    public bool IsBuilding;
+
     private Vector3 _newPos;
+
     private GameObject _crossHair;
     private NavMeshAgent _agent;
-    private bool _isBuilding;
-    private GameObject _camObject;
 
     // Static singleton property
     public static Player Instance
@@ -26,9 +28,45 @@ public class Player : MonoBehaviour
         name = "Player";
         _agent = gameObject.AddComponent<NavMeshAgent>();
         _agent.speed = 4f;
-        _camObject = GameObject.Find("CamObject");
         GetComponent<Renderer>().material.color = Color.blue;
         InitCrossHair();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.gameObject.name == "TerrainPlane" && Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                _crossHair.transform.position = hit.point;
+                if (!IsBuilding)
+                {
+                    _newPos = hit.point;
+                }
+            }
+        }
+        MoveTo(_newPos);
+    }
+    
+    public void BuildCurrentObject()
+    {
+        _crossHair.gameObject.transform.SetParent(null);
+        ExitBuildingMode();
+    }
+
+    public void CancelBuilding()
+    {
+        Destroy(_crossHair.gameObject);
+        ExitBuildingMode();
+    }
+
+    private void ExitBuildingMode()
+    {
+        InitCrossHair();
+        IsBuilding = false;
     }
 
     private void InitCrossHair()
@@ -48,39 +86,7 @@ public class Player : MonoBehaviour
     {
         Destroy(_crossHair.gameObject);
         _crossHair = Instantiate(prefab);
-        _isBuilding = true;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider.gameObject.name == "TerrainPlane")
-            {
-                _crossHair.transform.position = hit.point;
-            }
-            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                float clickTime = Time.time;
-                _newPos = _crossHair.transform.position;
-                if (clickTime + 2f > Time.time)
-                    _camObject.transform.position += new Vector3(-Input.GetAxis("Mouse X"), 0f, -Input.GetAxis("Mouse Y"));
-
-            }
-            else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                if (_isBuilding)
-                {
-                    // Le fais de réassigner le crosshair, fais perdre le focus sur l'objet et ne suis plus la souris
-                    InitCrossHair();
-                    _isBuilding = false;
-                }
-            }
-        }
-        MoveTo(_newPos);
+        IsBuilding = true;
     }
 }
 
