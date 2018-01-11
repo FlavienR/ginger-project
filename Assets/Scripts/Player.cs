@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
 
     public void ChangeCrossHairBuild(GameObject prefab)
     {
-        GameObject.Destroy(_crossHair.gameObject);
+        Destroy(_crossHair.gameObject);
         _crossHair = Instantiate(prefab);
         _isBuilding = true;
     }
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
             {
                 _crossHair.transform.position = hit.point;
             }
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 float clickTime = Time.time;
                 _newPos = _crossHair.transform.position;
@@ -70,9 +70,9 @@ public class Player : MonoBehaviour
                     _camObject.transform.position += new Vector3(-Input.GetAxis("Mouse X"), 0f, -Input.GetAxis("Mouse Y"));
 
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                if (_isBuilding && !EventSystem.current.IsPointerOverGameObject())
+                if (_isBuilding)
                 {
                     // Le fais de réassigner le crosshair, fais perdre le focus sur l'objet et ne suis plus la souris
                     InitCrossHair();
