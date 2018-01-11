@@ -17,7 +17,7 @@ public class Turret : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        _canon = transform.FindChild("Canon");
+        _canon = transform.Find("Canon");
     }
 
     // Update is called once per frame
