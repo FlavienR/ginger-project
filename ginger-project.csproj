@@ -300,15 +300,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ClickScript.cs" />
-    <Compile Include="Assets\Enemy.cs" />
-    <Compile Include="Assets\EnemyManager.cs" />
     <Compile Include="Assets\Enum\Cycle.cs" />
-    <Compile Include="Assets\GameManager.cs" />
-    <Compile Include="Assets\Player.cs" />
-    <Compile Include="Assets\SwitchScript.cs" />
-    <Compile Include="Assets\TimeManager.cs" />
-    <Compile Include="Assets\Turret.cs" />
+    <Compile Include="Assets\Scripts\ClickScript.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\SwitchScript.cs" />
+    <Compile Include="Assets\Scripts\TimeManager.cs" />
+    <Compile Include="Assets\Scripts\Turret.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
